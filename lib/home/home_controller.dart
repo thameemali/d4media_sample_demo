@@ -4,18 +4,24 @@ import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class HomeController extends GetxController {
-  RxBool fabClicked = false.obs;
   RxInt currentIndex = 0.obs;
+  RxInt mainListIndex = 0.obs;
+  RxInt subListIndex = 0.obs;
+
+  RxBool videoListClicked = false.obs;
+  RxBool fabClicked = false.obs;
   RxBool nothingClicked = true.obs;
   RxBool list1VideoClicked = false.obs;
   RxBool videoPlayerOn = false.obs;
 
-  late VideoPlayerController videoPlayerController;
-  ChewieController? chewieController;
+   VideoPlayerController videoPlayerController=VideoPlayerController.asset('');
+  late Rx<ChewieController> chewieController;
 
   @override
   void onInit() {
-    initializePlayer();
+    chewieController=ChewieController(videoPlayerController: videoPlayerController).obs;
+    //initializePlayer();
+    print('THe index is : $subListIndex');
     super.onInit();
   }
 
@@ -24,63 +30,51 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
-    videoPlayerController.dispose();
-    chewieController!.dispose();
+    super.onClose();
+   // chewieController!.dispose();
   }
 
-  late List<String> list1 = [
-    'assets/images/costarica thumbnail 1.png',
-    'assets/images/list_images/biriyani.jpg',
-    'assets/images/list_images/chilli.jpg',
-    'assets/images/list_images/friedrice.jpg',
-    'assets/images/list_images/main.jpg',
+  @override
+  void dispose() {
+    videoPlayerController.dispose();
+    chewieController.value.dispose();
+    super.dispose();
+
+  }
+
+  List<String> videoList = [
+    'assets/videos/costarica.mp4',
+    'assets/videos/bikers.mp4',
+    'assets/videos/horses.mp4',
   ];
-  late List<String> list2 = [
-    'assets/images/list_images/main.jpg',
-    'assets/images/list_images/steak.jpg',
-    'assets/images/list_images/mandi.jpg',
-    'assets/images/list_images/mushroom1.png',
-    'assets/images/list_images/pizza1.png',
-    'assets/images/list_images/noodles (1).jpg',
-  ];
-  late List<String> list3 = [
-    'assets/images/list_images/noodles.jpg',
-    'assets/images/list_images/momos (1).jpg',
-    'assets/images/list_images/chilli.jpg',
-    'assets/images/list_images/shrimp1.png',
-    'assets/images/list_images/main.jpg',
-    'assets/images/list_images/steak.jpg',
-  ];
-  late List<String> list4 = [
-    'images/list_images/salad.jpg',
-    'images/list_images/shrimp.jpg',
-    'images/list_images/mandi.jpg',
-    'images/list_images/mushroom1.png',
-    'images/list_images/soups (1).jpg',
-    'images/list_images/noodles (1).jpg',
-  ];
-  late List<String> list5 = [
-    'images/list_images/mushroom (1).jpg',
-    'images/list_images/biriyani.jpg',
-    'images/list_images/pizza.jpg',
-    'images/list_images/friedrice.jpg',
-    'images/list_images/soups3.png',
-  ];
-  late List<String> list6 = [
-    'images/list_images/chilli1.png',
-    'images/list_images/biriyani (1).jpg',
-    'images/list_images/mandi.jpg',
-    'images/list_images/friedrice (1).jpg',
-    'images/list_images/pizza1.png',
-    'images/list_images/hotel1 (1).jpg',
-  ];
-  late List<String> list7 = [
-    'images/list_images/momos (1).jpg',
-    'images/list_images/drinks.jpg',
-    'images/list_images/mandi.jpg',
-    'images/list_images/mushroom1.png',
-    'images/list_images/main.jpg',
-    'images/list_images/noodles (1).jpg',
+  List<List<String>> mainList = [
+    [
+      'assets/images/costarica thumbnail 1.png',
+      'assets/images/bikers thumbnail.png',
+      'assets/images/horses thumbnail.png',
+    ],
+    [
+      'assets/images/list_images/main.jpg',
+      'assets/images/list_images/steak.jpg',
+      'assets/images/list_images/mandi.jpg',
+      'assets/images/list_images/mushroom1.png',
+      'assets/images/list_images/pizza1.png',
+      'assets/images/list_images/noodles (1).jpg',
+    ],
+    [
+      'assets/images/list_images/noodles.jpg',
+      'assets/images/list_images/momos (1).jpg',
+      'assets/images/list_images/chilli.jpg',
+      'assets/images/list_images/shrimp1.png',
+      'assets/images/list_images/main.jpg',
+      'assets/images/list_images/steak.jpg',
+    ],
+    [
+      'assets/images/list_images/chilli.jpg',
+      'assets/images/list_images/shrimp1.png',
+      'assets/images/list_images/main.jpg',
+      'assets/images/list_images/steak.jpg',
+    ]
   ];
 
   final tabs = [
@@ -90,7 +84,8 @@ class HomeController extends GetxController {
         style: TextStyle(
             fontSize: 30, color: Colors.orange, fontWeight: FontWeight.bold),
       ),
-    ),const Center(
+    ),
+    const Center(
       child: Text(
         'Videos',
         style: TextStyle(
@@ -114,10 +109,11 @@ class HomeController extends GetxController {
   ];
 
   Future<void> initializePlayer() async {
+    print('video link : ${videoList[subListIndex.value]}');
     videoPlayerController =
-        VideoPlayerController.asset('assets/videos/costarica.mp4');
+        VideoPlayerController.asset(videoList[subListIndex.value]);
     await Future.wait([videoPlayerController.initialize()]);
-    chewieController = ChewieController(
+    chewieController.value = ChewieController(
       videoPlayerController: videoPlayerController,
       autoPlay: true,
       looping: true,

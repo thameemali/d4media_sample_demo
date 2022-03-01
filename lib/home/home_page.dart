@@ -26,8 +26,9 @@ class HomePage extends StatelessWidget {
       floatingActionButton: CustomFAB(
         onTap: () {
           _homeController.nothingClicked.value = false;
-          _homeController.list1VideoClicked.value = false;
+          _homeController.videoListClicked.value = false;
           _homeController.fabClicked.value = true;
+          _homeController.chewieController.value.videoPlayerController.pause();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -88,12 +89,12 @@ class HomePage extends StatelessWidget {
                 top: 80.0,
               ),
               child: _homeController.nothingClicked.value
-                  ? _homeController.list1VideoClicked.value
-                      ? const VideoPlayerPage()
+                  ? _homeController.videoListClicked.value
+                      ?  VideoPlayerPage(controller: _homeController,)
                       : HomeTab(homeController: _homeController)
                   : _homeController.fabClicked.value
-                      ? _homeController.list1VideoClicked.value
-                          ? const VideoPlayerPage()
+                      ? _homeController.videoListClicked.value
+                          ?  VideoPlayerPage(controller: _homeController,)
                           : HomeTab(homeController: _homeController)
                       : _homeController
                           .tabs[_homeController.currentIndex.value],

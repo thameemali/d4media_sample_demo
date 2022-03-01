@@ -12,7 +12,7 @@ class CustomAppBar extends StatelessWidget {
       actions: const [
         AppBarActionLogo(),
         SizedBox(
-          width: 150,
+          width: 120,
         ),
         AppBarActionBell(),
 

@@ -14,96 +14,91 @@ class HomeTab extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       initialIndex: homeController.currentIndex.value,
-      child: SizedBox(
-        width: double.infinity,
-        child: Scaffold(
-          body: ListView(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            children: [
-              TabBar(
-                isScrollable: true,
-                indicator: const UnderlineTabIndicator(
-                    borderSide: BorderSide(
-                        style: BorderStyle.solid,
-                        width: 3,
-                        color: Colors.orange),
-                    insets: EdgeInsets.only(left: 20, right: 50)),
-                tabs: [
-                  SizedBox(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.upload_file_outlined,
-                          size: 20,
-                          color: Colors.orange[700],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 7.0),
-                          child: Text(
-                            'Popular Uploads',
-                            style: TextStyle(
-                              color: Colors.orange[700],
-                            ),
+      child: Scaffold(
+        body: Column(
+          children: [
+            /*TabBar(
+              isScrollable: true,
+              indicator: const UnderlineTabIndicator(
+                  borderSide: BorderSide(
+                      style: BorderStyle.solid,
+                      width: 3,
+                      color: Colors.orange),
+                  insets: EdgeInsets.only(left: 20, right: 50)),
+              tabs: [
+                SizedBox(
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.upload_file_outlined,
+                        size: 20,
+                        color: Colors.orange[700],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 7.0),
+                        child: Text(
+                          'Popular Uploads',
+                          style: TextStyle(
+                            color: Colors.orange[700],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.book_outlined,
-                          size: 20,
-                          color: Colors.orange[700],
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.book_outlined,
+                        size: 20,
+                        color: Colors.orange[700],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 7.0),
+                        child: Text(
+                          'Library',
+                          style: TextStyle(color: Colors.orange[700]),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 7.0),
-                          child: Text(
-                            'Library',
-                            style: TextStyle(color: Colors.orange[700]),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.library_music_outlined,
-                          size: 20,
-                          color: Colors.orange[700],
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.library_music_outlined,
+                        size: 20,
+                        color: Colors.orange[700],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 7.0),
+                        child: Text(
+                          'Songs',
+                          style: TextStyle(color: Colors.orange[700]),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 7.0),
-                          child: Text(
-                            'Songs',
-                            style: TextStyle(color: Colors.orange[700]),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              HomeTabLists(
-                homeController: homeController,
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),*/
+            HomeTabLists(
+              homeController: homeController,
+            ),
+          ],
         ),
       ),
     );
