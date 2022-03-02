@@ -13,45 +13,58 @@ class HomeController extends GetxController {
   RxBool nothingClicked = true.obs;
   RxBool list1VideoClicked = false.obs;
   RxBool videoPlayerOn = false.obs;
+  RxBool viewAllClicked=false.obs;
 
-   VideoPlayerController videoPlayerController=VideoPlayerController.asset('');
+
+  VideoPlayerController videoPlayerController = VideoPlayerController.asset('');
   late Rx<ChewieController> chewieController;
 
   @override
   void onInit() {
-    chewieController=ChewieController(videoPlayerController: videoPlayerController).obs;
-    //initializePlayer();
-    print('THe index is : $subListIndex');
+    chewieController =
+        ChewieController(videoPlayerController: videoPlayerController).obs;
     super.onInit();
   }
 
   @override
   void onReady() {}
 
-  @override
-  void onClose() {
-    super.onClose();
-   // chewieController!.dispose();
-  }
 
   @override
   void dispose() {
     videoPlayerController.dispose();
     chewieController.value.dispose();
     super.dispose();
-
   }
 
   List<String> videoList = [
     'assets/videos/costarica.mp4',
     'assets/videos/bikers.mp4',
     'assets/videos/horses.mp4',
+    'assets/videos/whale.mp4',
+    'assets/videos/lion.mp4',
   ];
+  List<String> videoNamesList = [
+    'Costa Rica',
+    'Mountain Bikers',
+    'Horses and Nature',
+    'Baby and Beluga Whale',
+    'White Lion and Baby',
+  ];
+  List<double> widthList=[
+    250.0,200.0,300.0,400.0
+  ];
+  List<double> heightList=[
+    400.0,200.0,100.0,150.0
+  ];
+  List<String> headingList=['','Animation Videos & Songs','Shorts','Anti CAA Speeches'];
   List<List<String>> mainList = [
     [
       'assets/images/costarica thumbnail 1.png',
       'assets/images/bikers thumbnail.png',
       'assets/images/horses thumbnail.png',
+      'assets/images/whale.png',
+      'assets/images/lion.png',
     ],
     [
       'assets/images/list_images/main.jpg',

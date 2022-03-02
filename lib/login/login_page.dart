@@ -2,6 +2,7 @@ import 'package:d4media_sample_demo_app/custom_widgets/custom_elevated_button.da
 import 'package:d4media_sample_demo_app/custom_widgets/custom_heading_text.dart';
 import 'package:d4media_sample_demo_app/custom_widgets/custom_logo_image.dart';
 import 'package:d4media_sample_demo_app/custom_widgets/custom_text_field.dart';
+import 'package:d4media_sample_demo_app/home/home_controller.dart';
 import 'package:d4media_sample_demo_app/home/home_page.dart';
 import 'package:d4media_sample_demo_app/login/login_controller.dart';
 import 'package:d4media_sample_demo_app/register/register_page.dart';

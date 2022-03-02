@@ -9,15 +9,15 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      actions: const [
-        AppBarActionLogo(),
+      actions:  [
+        const AppBarActionLogo(),
         SizedBox(
-          width: 120,
+          width: MediaQuery.of(context).size.width-250,
         ),
-        AppBarActionBell(),
+        const AppBarActionBell(),
 
-        AppBarActionFavorites(),
-        SizedBox(
+        const AppBarActionFavorites(),
+        const SizedBox(
           width: 20,
         ),
       ],
