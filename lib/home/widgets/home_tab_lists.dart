@@ -1,5 +1,4 @@
 import 'package:d4media_sample_demo_app/home/home_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -59,6 +58,7 @@ class HomeTabLists extends StatelessWidget {
 
                         if (index == 0) {
                           homeController.videoListClicked.value = true;
+                          homeController.appBarBackPressed.value=false;
                           homeController.initializePlayer();
                           Fluttertoast.showToast(
                               msg: 'Video is about to play',

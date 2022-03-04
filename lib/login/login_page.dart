@@ -2,22 +2,20 @@ import 'package:d4media_sample_demo_app/custom_widgets/custom_elevated_button.da
 import 'package:d4media_sample_demo_app/custom_widgets/custom_heading_text.dart';
 import 'package:d4media_sample_demo_app/custom_widgets/custom_logo_image.dart';
 import 'package:d4media_sample_demo_app/custom_widgets/custom_text_field.dart';
-import 'package:d4media_sample_demo_app/home/home_controller.dart';
-import 'package:d4media_sample_demo_app/home/home_page.dart';
 import 'package:d4media_sample_demo_app/login/login_controller.dart';
 import 'package:d4media_sample_demo_app/register/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  final LoginController _loginController = Get.put(LoginController());
+  final LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
+    loginController.customProgressbarFunction(context);
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -61,14 +59,14 @@ class LoginPage extends StatelessWidget {
                           FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           LengthLimitingTextInputFormatter(10),
                         ],
-                        controller: _loginController.mobileNoController,
-                        errorMessage: _loginController.mobileError.value,
+                        controller: loginController.mobileNoController,
+                        errorMessage: loginController.mobileError.value,
                         onTap: () {
-                          _loginController.mobileError.value = '';
+                          loginController.mobileError.value = '';
                         },
-                        errorBorder: _loginController.mobileError.value == ''
-                            ? _loginController.noErrorBorderFun()
-                            : _loginController.errorBorderFun(),
+                        errorBorder: loginController.mobileError.value == ''
+                            ? loginController.noErrorBorderFun()
+                            : loginController.errorBorderFun(),
                       ),
                     ),
                     Obx(
@@ -79,14 +77,14 @@ class LoginPage extends StatelessWidget {
                           FilteringTextInputFormatter.allow(
                               RegExp(r'[0-9a-zA-Z.,!@#$%^&*]')),
                         ],
-                        controller: _loginController.passwordController,
-                        errorMessage: _loginController.passwordError.value,
+                        controller: loginController.passwordController,
+                        errorMessage: loginController.passwordError.value,
                         onTap: () {
-                          _loginController.passwordError.value = '';
+                          loginController.passwordError.value = '';
                         },
-                        errorBorder: _loginController.passwordError.value == ''
-                            ? _loginController.noErrorBorderFun()
-                            : _loginController.errorBorderFun(),
+                        errorBorder: loginController.passwordError.value == ''
+                            ? loginController.noErrorBorderFun()
+                            : loginController.errorBorderFun(),
                       ),
                     ),
                     Padding(
@@ -130,17 +128,10 @@ class LoginPage extends StatelessWidget {
                     CustomElevatedButton(
                       showText: 'CONTINUE',
                       buttonAction: () async {
-                        _loginController.validateAfterClick = true;
-                        if (_loginController.buttonClickedValidation()) {
-                          final sharedPreference =
-                              await SharedPreferences.getInstance();
-                          sharedPreference.setString('mobile',
-                              _loginController.validMobile);
-
-                          Get.off( HomePage());
-
-                          _loginController.mobileNoController.clear();
-                          _loginController.passwordController.clear();
+                        loginController.validateAfterClick = true;
+                        if (loginController.buttonClickedValidation()) {
+                          loginController.mobileNoController.clear();
+                          loginController.passwordController.clear();
                         } else {}
                       },
                     ),

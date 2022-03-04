@@ -1,15 +1,15 @@
 import 'dart:async';
 
-import 'package:d4media_sample_demo_app/home/home_controller.dart';
 import 'package:d4media_sample_demo_app/home/home_page.dart';
+import 'package:d4media_sample_demo_app/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'login/login_page.dart';
 
-void main() {
- // Get.put(HomeController());
+void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -38,12 +38,18 @@ class D4Splash extends StatefulWidget {
 
 class _D4SplashState extends State<D4Splash>
     with SingleTickerProviderStateMixin {
-  bool flag=false;
+  late LoginController loginController;
+
   @override
   void initState() {
-    Timer(const Duration(seconds: 5), () => flag?Get.off( HomePage()):Get.off(LoginPage()));
+    loginController = Get.put(LoginController());
+    loginController.userData.writeIfNull('isLogged', false);
+    Future.delayed(const Duration(seconds: 3), () async {
+      checkIfLogged();
+    });
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +64,10 @@ class _D4SplashState extends State<D4Splash>
       ),
     );
   }
-  Future<void> getSaved(BuildContext context) async {
-    WidgetsFlutterBinding.ensureInitialized();
-    final sharedPreferences = await SharedPreferences.getInstance();
-    final savedUsername = sharedPreferences.getString('mobile');
-    if (savedUsername != null) {
-      flag = true;
-    } else {
-      flag = false;
-    }
+
+  void checkIfLogged() {
+    loginController.userData.read('isLogged')
+        ? Get.to(HomePage())
+        : Get.to(LoginPage());
   }
 }

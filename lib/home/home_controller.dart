@@ -1,6 +1,8 @@
 import 'package:chewie/chewie.dart';
+import 'package:d4media_sample_demo_app/home/tabs/audio_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:video_player/video_player.dart';
 
 class HomeController extends GetxController {
@@ -13,8 +15,14 @@ class HomeController extends GetxController {
   RxBool nothingClicked = true.obs;
   RxBool list1VideoClicked = false.obs;
   RxBool videoPlayerOn = false.obs;
-  RxBool viewAllClicked=false.obs;
+  RxBool viewAllClicked = false.obs;
+  RxBool appBarBackPressed=false.obs;
 
+  var isListening = false.obs;
+  var speechText = 'Tap the mic and speak...'.obs;
+
+  final SpeechToText speechToText = SpeechToText();
+  DateTime backPress = DateTime.now();
 
   VideoPlayerController videoPlayerController = VideoPlayerController.asset('');
   late Rx<ChewieController> chewieController;
@@ -28,7 +36,6 @@ class HomeController extends GetxController {
 
   @override
   void onReady() {}
-
 
   @override
   void dispose() {
@@ -51,13 +58,14 @@ class HomeController extends GetxController {
     'Baby and Beluga Whale',
     'White Lion and Baby',
   ];
-  List<double> widthList=[
-    250.0,200.0,300.0,400.0
+  List<double> widthList = [250.0, 200.0, 300.0, 400.0];
+  List<double> heightList = [400.0, 200.0, 100.0, 150.0];
+  List<String> headingList = [
+    '',
+    'Animation Videos & Songs',
+    'Shorts',
+    'Anti CAA Speeches'
   ];
-  List<double> heightList=[
-    400.0,200.0,100.0,150.0
-  ];
-  List<String> headingList=['','Animation Videos & Songs','Shorts','Anti CAA Speeches'];
   List<List<String>> mainList = [
     [
       'assets/images/costarica thumbnail 1.png',
@@ -91,13 +99,7 @@ class HomeController extends GetxController {
   ];
 
   final tabs = [
-    const Center(
-      child: Text(
-        'Audio',
-        style: TextStyle(
-            fontSize: 30, color: Colors.orange, fontWeight: FontWeight.bold),
-      ),
-    ),
+    AudioTab(),
     const Center(
       child: Text(
         'Videos',
@@ -141,5 +143,42 @@ class HomeController extends GetxController {
       autoInitialize: true,
     );
     update();
+  }
+
+  void listenToRecord() async {
+    if (!isListening.value) {
+      bool available = await speechToText.initialize(
+        onStatus: (val) {},
+        onError: (val) {},
+      );
+      if (available) {
+        isListening.value = true;
+        speechToText.listen(
+          onResult: (val) {
+            speechText.value = val.recognizedWords;
+          },
+        );
+      }
+    } else {
+      isListening.value = false;
+      speechToText.stop();
+      speechText.value = 'Tap the mic and speak...';
+    }
+  }
+
+  Future<bool> onWillPop() async {
+    final timegap = DateTime.now().difference(backPress);
+    final cantExit = timegap >= const Duration(seconds: 2);
+    backPress = DateTime.now();
+    if (cantExit) {
+      //show snackbar
+      Get.snackbar('d4media', 'Press Back button again to Exit',
+          duration: const Duration(seconds: 2),
+          snackPosition: SnackPosition.BOTTOM);
+      return false;
+    } else {
+      Get.clearRouteTree();
+      return true;
+    }
   }
 }

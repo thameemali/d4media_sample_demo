@@ -25,6 +25,7 @@ class CustomBottomNavBar extends StatelessWidget {
             homeController.nothingClicked.value=false;
             homeController.fabClicked.value = false;
             homeController.currentIndex.value = index;
+            homeController.videoListClicked.value=false;
             homeController.chewieController.value.videoPlayerController.pause();
           },
           activeIndex: homeController.currentIndex.value,

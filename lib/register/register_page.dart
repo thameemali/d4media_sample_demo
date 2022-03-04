@@ -3,7 +3,6 @@ import 'package:d4media_sample_demo_app/custom_widgets/custom_heading_text.dart'
 import 'package:d4media_sample_demo_app/custom_widgets/custom_logo_image.dart';
 import 'package:d4media_sample_demo_app/custom_widgets/custom_text_field.dart';
 import 'package:d4media_sample_demo_app/login/login_controller.dart';
-import 'package:d4media_sample_demo_app/otp/otp_page.dart';
 import 'package:d4media_sample_demo_app/register/password_error_message.dart';
 import 'package:d4media_sample_demo_app/register/register_controller.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +12,12 @@ import 'package:get/get.dart';
 class RegisterPage extends StatelessWidget {
   RegisterPage({Key? key}) : super(key: key);
 
-  final RegisterController _registerController = Get.put(RegisterController());
+  final RegisterController registerController = Get.put(RegisterController());
   final LoginController _loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
+    _loginController.customProgressbarFunction(context);
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -55,25 +55,25 @@ class RegisterPage extends StatelessWidget {
                   children: [
                     Obx(
                       () => CustomTextField(
-                        errorMessage: _registerController.nameError.value,
+                        errorMessage: registerController.nameError.value,
                         hintString: 'Name',
                         inputAction: TextInputAction.next,
                         inputFormat: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'[a-zA-Z]')),
                         ],
-                        controller: _registerController.nameController,
+                        controller: registerController.nameController,
                         onTap: () {
-                          _registerController.nameError.value = '';
+                          registerController.nameError.value = '';
                         },
-                        errorBorder: _registerController.nameError.value == ''
+                        errorBorder: registerController.nameError.value == ''
                             ? _loginController.noErrorBorderFun()
                             : _loginController.errorBorderFun(),
                       ),
                     ),
                     Obx(
                       () => CustomTextField(
-                        errorMessage: _registerController.phoneError.value,
+                        errorMessage: registerController.phoneError.value,
                         hintString: 'Phone Number',
                         keyboardType: TextInputType.number,
                         inputAction: TextInputAction.next,
@@ -81,37 +81,55 @@ class RegisterPage extends StatelessWidget {
                           FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           LengthLimitingTextInputFormatter(10),
                         ],
-                        controller: _registerController.phoneNoController,
+                        controller: registerController.phoneNoController,
                         onTap: () {
-                          _registerController.phoneError.value = '';
+                          registerController.phoneError.value = '';
                         },
-                        errorBorder: _registerController.phoneError.value == ''
+                        errorBorder: registerController.phoneError.value == ''
+                            ? _loginController.noErrorBorderFun()
+                            : _loginController.errorBorderFun(),
+                      ),
+                    ),
+                    Obx(
+                          () => CustomTextField(
+                        errorMessage: registerController.emailError.value,
+                        hintString: 'Email ID',
+                        keyboardType: TextInputType.emailAddress,
+                        inputAction: TextInputAction.next,
+                        inputFormat: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9a-z.@]')),
+                        ],
+                        controller: registerController.emailController,
+                        onTap: () {
+                          registerController.emailError.value = '';
+                        },
+                        errorBorder: registerController.emailError.value == ''
                             ? _loginController.noErrorBorderFun()
                             : _loginController.errorBorderFun(),
                       ),
                     ),
                     Obx(
                       () => CustomTextField(
-                        errorMessage: _registerController.passwordError.value,
+                        errorMessage: registerController.passwordError.value,
                         hintString: 'Enter Your Password',
                         inputAction: TextInputAction.next,
                         inputFormat: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'[0-9a-zA-Z.,!@#$%^&*]')),
                         ],
-                        controller: _registerController.passwordController,
+                        controller: registerController.passwordController,
                         onTap: () {
-                          _registerController.passwordError.value = '';
+                          registerController.passwordError.value = '';
                         },
-                        errorBorder: _registerController.passwordError.value ==
+                        errorBorder: registerController.passwordError.value ==
                                 ''
-                            ? _registerController.passFormatNeeded.value == ''
+                            ? registerController.passFormatNeeded.value == ''
                                 ? _loginController.noErrorBorderFun()
                                 : _loginController.errorBorderFun()
                             : _loginController.errorBorderFun(),
                       ),
                     ),
-                    PasswordErrorMessage(),
+                    const PasswordErrorMessage(),
                     Obx(
                       () => CustomTextField(
                         hintString: 'Confirm Password',
@@ -121,16 +139,16 @@ class RegisterPage extends StatelessWidget {
                               RegExp(r'[0-9a-zA-Z.,!@#$%^&*]')),
                         ],
                         controller:
-                            _registerController.retypePasswordController,
+                            registerController.retypePasswordController,
                         errorMessage:
-                            _registerController.passFormatNeeded.value == ''
-                                ? _registerController.retypePasswordError.value
+                            registerController.passFormatNeeded.value == ''
+                                ? registerController.retypePasswordError.value
                                 : '',
                         onTap: () {
-                          _registerController.retypePasswordError.value = '';
+                          registerController.retypePasswordError.value = '';
                         },
                         errorBorder:
-                            _registerController.retypePasswordError.value == ''
+                            registerController.retypePasswordError.value == ''
                                 ? _loginController.noErrorBorderFun()
                                 : _loginController.errorBorderFun(),
                       ),
@@ -138,13 +156,14 @@ class RegisterPage extends StatelessWidget {
                     CustomElevatedButton(
                       showText: 'SEND OTP',
                       buttonAction: () {
-                        _registerController.validateAfterClick = true;
-                        if (_registerController.buttonClickedValidation()) {
-                          Get.to(OtpPage());
-                          _registerController.nameController.clear();
-                          _registerController.phoneNoController.clear();
-                          _registerController.passwordController.clear();
-                          _registerController.retypePasswordController.clear();
+                        registerController.validateAfterClick = true;
+                        if (registerController.buttonClickedValidation()) {
+
+                          registerController.nameController.clear();
+                          registerController.phoneNoController.clear();
+                          registerController.emailController.clear();
+                          registerController.passwordController.clear();
+                          registerController.retypePasswordController.clear();
                         } else {}
                       },
                     ),

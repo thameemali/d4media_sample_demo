@@ -15,7 +15,8 @@ class VideoPlayerAppBar extends StatelessWidget {
       leading: GestureDetector(
         child: const Icon(Icons.keyboard_backspace_sharp),
         onTap: () {
-          Get.offAll(HomePage());
+          homeController.appBarBackPressed.value=true;
+          homeController.videoListClicked.value=false;
           homeController.chewieController.value.videoPlayerController.pause();
         },
       ),

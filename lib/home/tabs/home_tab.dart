@@ -12,7 +12,7 @@ class HomeTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      initialIndex: homeController.currentIndex.value,
+      initialIndex: 0,
       child: Scaffold(
         body: Column(
           children: [

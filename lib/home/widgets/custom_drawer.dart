@@ -1,10 +1,12 @@
+import 'package:d4media_sample_demo_app/login/login_controller.dart';
 import 'package:d4media_sample_demo_app/login/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+   CustomDrawer({Key? key}) : super(key: key);
+  LoginController _loginController=Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +149,8 @@ class CustomDrawer extends StatelessWidget {
                 horizontalTitleGap: 0,
                 title: const Text("Logout"),
                 onTap: () {
+                  _loginController.userData.remove('username');
+                  _loginController.userData.write('isLogged', false);
                   Get.offAll(LoginPage());
                 },
                 leading: Image.asset('assets/icons/logout_black_24dp.png',color: Colors.black54,),
